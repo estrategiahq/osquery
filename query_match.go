@@ -1,4 +1,4 @@
-package esquery
+package osquery
 
 import (
 	"github.com/fatih/structs"
@@ -71,6 +71,7 @@ type matchParams struct {
 	MinMatch     string        `structs:"minimum_should_match,omitempty"`
 	ZeroTerms    ZeroTerms     `structs:"zero_terms_query,string,omitempty"`
 	Slp          uint16        `structs:"slop,omitempty"` // only relevant for match_phrase query
+	Boost        float32       `structs:"boost,omitempty"`
 }
 
 // Match creates a new query of type "match" with the provided field name.
@@ -192,6 +193,12 @@ func (q *MatchQuery) MinimumShouldMatch(s string) *MatchQuery {
 func (q *MatchQuery) Slop(n uint16) *MatchQuery {
 	q.params.Slp = n
 	return q
+}
+
+// Boost sets the boost value of the query.
+func (a *MatchQuery) Boost(b float32) *MatchQuery {
+	a.params.Boost = b
+	return a
 }
 
 // ZeroTermsQuery sets the "zero_terms_query" option to use. This indicates

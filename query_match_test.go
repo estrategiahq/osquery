@@ -1,4 +1,4 @@
-package esquery
+package osquery
 
 import (
 	"testing"
@@ -19,7 +19,7 @@ func TestMatch(t *testing.T) {
 		},
 		{
 			"match with more params",
-			Match("issue_number").Query(16).Transpositions(false).MaxExpansions(32).Operator(OperatorAnd),
+			Match("issue_number").Query(16).Transpositions(false).MaxExpansions(32).Operator(OperatorAnd).Boost(2.44),
 			map[string]interface{}{
 				"match": map[string]interface{}{
 					"issue_number": map[string]interface{}{
@@ -27,6 +27,7 @@ func TestMatch(t *testing.T) {
 						"max_expansions": 32,
 						"transpositions": false,
 						"operator":       "AND",
+						"boost":          2.44,
 					},
 				},
 			},

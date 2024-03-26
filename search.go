@@ -1,4 +1,4 @@
-package esquery
+package osquery
 
 import (
 	"bytes"
@@ -26,7 +26,6 @@ type SearchRequest struct {
 	sort        Sort
 	source      Source
 	timeout     *time.Duration
-
 }
 
 // Search creates a new SearchRequest object, to be filled via method chaining.
@@ -113,8 +112,6 @@ func (req *SearchRequest) Highlight(highlight Mappable) *SearchRequest {
 	return req
 }
 
-
-
 // Map implements the Mappable interface. It converts the request to into a
 // nested map[string]interface{}, as expected by the go-elasticsearch library.
 func (req *SearchRequest) Map() map[string]interface{} {
@@ -154,7 +151,6 @@ func (req *SearchRequest) Map() map[string]interface{} {
 	if req.searchAfter != nil {
 		m["search_after"] = req.searchAfter
 	}
-
 
 	source := req.source.Map()
 	if len(source) > 0 {
@@ -202,13 +198,13 @@ func (req *SearchRequest) RunSearch(
 }
 
 // Query is a shortcut for creating a SearchRequest with only a query. It is
-// mostly included to maintain the API provided by esquery in early releases.
+// mostly included to maintain the API provided by osquery in early releases.
 func Query(q Mappable) *SearchRequest {
 	return Search().Query(q)
 }
 
 // Aggregate is a shortcut for creating a SearchRequest with aggregations. It is
-// mostly included to maintain the API provided by esquery in early releases.
+// mostly included to maintain the API provided by osquery in early releases.
 func Aggregate(aggs ...Aggregation) *SearchRequest {
 	return Search().Aggs(aggs...)
 }
