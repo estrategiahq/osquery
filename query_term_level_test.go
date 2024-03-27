@@ -147,5 +147,21 @@ func TestTermLevel(t *testing.T) {
 				},
 			},
 		},
+		{
+			"nested",
+			Nested("obj1", Term("obj1.name", "blue")),
+			map[string]interface{}{
+				"nested": map[string]interface{}{
+					"path": "obj1",
+					"query": map[string]interface{}{
+						"term": map[string]interface{}{
+							"obj1.name": map[string]interface{}{
+								"value": "blue",
+							},
+						},
+					},
+				},
+			},
+		},
 	})
 }

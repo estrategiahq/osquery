@@ -518,3 +518,33 @@ func (q TermsSetQuery) Map() map[string]interface{} {
 		},
 	}
 }
+
+// ----------------------------------------------------------------------------
+
+// NestedQuery represents a query of type "nested", as described in:
+// https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html
+
+type NestedQuery struct {
+	Path string
+	Qry  Mappable `structs:"query"`
+}
+
+// Nested creates a new query of type "nested" on the provided path and using
+// the provided query.
+func Nested(path string, query Mappable) *NestedQuery {
+	return &NestedQuery{
+		Path: path,
+		Qry:  query,
+	}
+}
+
+// Map returns a map representation of the query, thus implementing the
+// Mappable interface.
+func (q *NestedQuery) Map() map[string]interface{} {
+	return map[string]interface{}{
+		"nested": map[string]interface{}{
+			"path":  q.Path,
+			"query": q.Qry.Map(),
+		},
+	}
+}
