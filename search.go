@@ -75,6 +75,12 @@ func (req *SearchRequest) Sort(name string, order Order) *SearchRequest {
 	return req
 }
 
+// Set Custom Sort
+func (req *SearchRequest) SetSort(sort Sort) *SearchRequest {
+	req.sort = sort
+	return req
+}
+
 // SearchAfter retrieve the sorted result
 func (req *SearchRequest) SearchAfter(s ...interface{}) *SearchRequest {
 	req.searchAfter = append(req.searchAfter, s...)
