@@ -15,17 +15,18 @@ import (
 // Not all features of the search API are currently supported, but a request can
 // currently include a query, aggregations, and more.
 type SearchRequest struct {
-	aggs        []Aggregation
-	explain     *bool
-	from        *uint64
-	highlight   Mappable
-	searchAfter []interface{}
-	postFilter  Mappable
-	query       Mappable
-	size        *uint64
-	sort        Sort
-	source      Source
-	timeout     *time.Duration
+	aggs           []Aggregation
+	explain        *bool
+	from           *uint64
+	highlight      Mappable
+	searchAfter    []interface{}
+	postFilter     Mappable
+	query          Mappable
+	size           *uint64
+	sort           Sort
+	source         Source
+	timeout        *time.Duration
+	trackTotalHits *bool
 }
 
 // Search creates a new SearchRequest object, to be filled via method chaining.
@@ -118,6 +119,14 @@ func (req *SearchRequest) Highlight(highlight Mappable) *SearchRequest {
 	return req
 }
 
+// TrackTotalHits set if the total hits should be tracked
+// Default is true
+// https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html#track-total-hits
+func (req *SearchRequest) TrackTotalHits(b bool) *SearchRequest {
+	req.trackTotalHits = &b
+	return req
+}
+
 // Map implements the Mappable interface. It converts the request to into a
 // nested map[string]interface{}, as expected by the go-elasticsearch library.
 func (req *SearchRequest) Map() map[string]interface{} {
@@ -156,6 +165,10 @@ func (req *SearchRequest) Map() map[string]interface{} {
 	}
 	if req.searchAfter != nil {
 		m["search_after"] = req.searchAfter
+	}
+
+	if req.trackTotalHits != nil {
+		m["track_total_hits"] = *req.trackTotalHits
 	}
 
 	source := req.source.Map()
